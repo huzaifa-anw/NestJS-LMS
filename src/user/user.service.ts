@@ -22,9 +22,12 @@ export class UserService {
         catch (e) {
             console.log(e)
             const err = e as {code?: number}
+            
             if (err.code === 11000 ) {
                 throw new ConflictException("Email is already taken");
             }
+
+            throw e;
         }
 
     }
