@@ -22,8 +22,10 @@ export class UserService {
         catch (e) {
             console.log(e)
             const err = e as {code?: number}
+
+            const DUPLICATE_KEY_ERROR_CODE = 11000;
             
-            if (err.code === 11000 ) {
+            if (err.code === DUPLICATE_KEY_ERROR_CODE) {
                 throw new ConflictException("Email is already taken");
             }
 
@@ -34,5 +36,13 @@ export class UserService {
 
     async findUser(id: string) {
         return await this.userModel.findById(id);
+    }
+
+    async findUserByEmail(email: string) {
+        try {
+            return await this.userModel.findOne({email});
+        } catch (e) {
+            console.log(e)
+        }
     }
 }
